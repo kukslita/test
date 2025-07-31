@@ -27,17 +27,6 @@
     .fade-in {
       opacity: 1;
     }
-    #video-container {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      z-index: -1;
-      opacity: 0;
-      transition: opacity 1s;
-    }
-    #video-container.show {
-      opacity: 0.2;
-    }
     #burn-effect {
       font-weight: bold;
       color: #ff6b00;
@@ -85,13 +74,6 @@
     HARDWARE_INTERRUPT_STORM
   </div>
 
-  <!-- Фоновое видео (появляется на 0:45) -->
-  <div id="video-container">
-    <video id="wave-video" loop muted style="width:100%; height:100%; object-fit:cover;">
-      <source src="video/sea-background.mp4" type="video/mp4">
-    </video>
-  </div>
-
   <!-- Основной контент -->
   <div id="content" class="container"></div>
 
@@ -101,9 +83,7 @@
   <script>
     const content = document.getElementById('content');
     const audio = document.getElementById('ocean-sound');
-    const videoContainer = document.getElementById('video-container');
-    const waveVideo = document.getElementById('wave-video');
-    let canTrigger = false;
+    let canTrigger = false; // Триггер отключён в начале
 
     // 0:03 - Убираем BSOD, показываем первый текст
     setTimeout(() => {
@@ -126,66 +106,62 @@
       }, 500);
     }, 8000);
 
-    // 0:20 - Просто будь
+    // 0:30 - Просто будь
     setTimeout(() => {
       content.classList.remove('fade-in');
       setTimeout(() => {
         content.innerHTML = `Ты не обязана решать всё прямо сейчас.<br>Просто будь.`;
         content.classList.add('fade-in');
       }, 500);
-    }, 20000);
+    }, 30000);
 
-    // 0:45 - Показываем видео
+    // 1:00 - Оставить след (20 секунд + анимация сгорания)
     setTimeout(() => {
-      videoContainer.classList.add('show');
-      waveVideo.play();
-    }, 45000);
-
-    // 1:00 - Оставить след (20 секунд)
-    setTimeout(() => {
-      videoContainer.classList.remove('show'); // Убираем видео
       content.classList.remove('fade-in');
       setTimeout(() => {
         content.innerHTML = `
           <div style="margin-bottom: 20px;">
-            Можешь оставить след,<br>
-            который мешает тебе двигаться.
+            Можешь оставить след.<br>
+            Но он исчезнет навсегда.
           </div>
-          <input type="text" id="user-input" placeholder="Напиши одно слово..." autofocus style="padding:10px; width:80%; max-width:400px; background:#111; border:1px solid #555; color:#fff; border-radius:4px;">
+          <input type="text" id="user-input" placeholder="Напиши что-то..." autofocus style="padding:10px; width:80%; max-width:400px; background:#111; border:1px solid #555; color:#fff; border-radius:4px;">
         `;
         const input = document.getElementById('user-input');
 
+        // Разрешаем ввод, но не активируем триггер
         input.addEventListener('input', () => {
           setTimeout(() => {
+            // Анимация "сгорания"
             input.style.display = 'none';
             content.innerHTML = `<div id="burn-effect">Твой след... сгорает.</div>`;
             setTimeout(() => {
               content.innerHTML = '';
-            }, 3000); // Анимация "сгорания" — 3 секунды
-          }, 100); // Сразу после ввода
+            }, 2000); // Теперь анимация длится 2 секунды
+          }, 3000); // Теперь поле доступно 3 секунды
         });
       }, 500);
     }, 60000); // 1:00
 
-    // 1:25 - Финальная фраза
+    // 1:15 - Активируем триггер (только после этапа с вводом)
+    setTimeout(() => {
+      canTrigger = true;
+    }, 75000); // 1:15
+
+    // 1:10 - Финальная фраза
     setTimeout(() => {
       content.classList.remove('fade-in');
       setTimeout(() => {
         content.innerHTML = `Келтейн. Мы рядом.<br>Ты не обязана быть включённой.`;
         content.classList.add('fade-in');
       }, 500);
-    }, 85000); // 1:25
+    }, 70000);
 
-    // 1:30 - Закрытие
+    // 1:20 - Закрытие
     setTimeout(() => {
       window.close();
-    }, 90000); // 1:30
+    }, 80000);
 
-    // Триггер: движение мыши (включаем только после 1:00)
-    setTimeout(() => {
-      canTrigger = true;
-    }, 60000);
-
+    // Триггер: движение мыши (только после 1:15)
     function triggerBreak() {
       if (canTrigger) {
         content.classList.remove('fade-in');
