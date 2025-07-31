@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>404</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #000;
+      color: #fff;
+      font-family: 'Courier New', monospace;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      overflow: hidden;
+      text-align: center;
+      font-size: 24px;
+      line-height: 1.8;
+    }
+    .container {
+      opacity: 0;
+      transition: opacity 1s ease-in-out;
+    }
+    .fade-in {
+      opacity: 1;
+    }
+    #video-container {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: -1;
+      opacity: 0;
+      transition: opacity 1s;
+    }
+    #video-container.show {
+      opacity: 0.2;
+    }
+    #burn-effect {
+      font-weight: bold;
+      color: #ff6b00;
+      text-shadow: 0 0 10px #ff9d00;
+      animation: flicker 1.5s infinite;
+    }
+    @keyframes flicker {
+      0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% { text-shadow: 0 0 10px #ff9d00; }
+      20%, 24%, 55% { text-shadow: 0 0 20px #ff0000, 0 0 30px #ff0000; }
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 18px;
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Синий экран -->
+  <div id="bsod" style="background:#000077; color:#fff; font-size:14px; padding:20px; white-space:pre-line; position:absolute; top:0; left:0; width:100%; height:100%; z-index:10;">
